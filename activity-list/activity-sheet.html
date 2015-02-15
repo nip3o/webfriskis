@@ -1,0 +1,28 @@
+<md-bottom-sheet class="md-list md-has-header">
+  <h3>{{ activity.name }}</h3>
+  <div>
+      {{ activity.location }}
+  </div>
+  <div>
+      {{ activity.date | date:'EEEE d MMMM' }} {{ activity.time }}
+  </div>
+  <div ng-if="activity.leader">
+    {{ activity.leader }}
+  </div>
+  <div>
+    {{ activity.placesLeft }} platser kvar av {{ activity.placesTotal }}
+  </div>
+  <p></p>
+
+  <md-divider></md-divider>
+
+  <md-list>
+    <md-item>
+      <md-button>
+        <i class="fa fa-2x fa-plus-circle"></i>
+        <span class="md-inline-list-icon-label">Boka passet</span>
+      </md-button>
+    </md-item>
+  </md-list>
+
+</md-bottom-sheet>

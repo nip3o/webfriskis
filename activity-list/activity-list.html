@@ -1,0 +1,18 @@
+<md-list>
+  <md-item ng-repeat="activity in items" ng-click="select($event, activity)">
+    <md-item-content>
+      <div class="md-tile-left">
+
+      </div>
+      <div class="md-tile-content">
+        <h3>{{ activity.name }}</h3>
+        <h4>{{ activity.time }}</h4>
+        <p>
+          {{ activity.location }}
+          <span ng-if="activity.leader">, {{ activity.leader }}</span>
+        </p>
+      </div>
+    </md-item-content>
+    <md-divider ng-if="!$last"></md-divider>
+  </md-item>
+</md-list>
