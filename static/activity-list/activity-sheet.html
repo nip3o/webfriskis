@@ -1,16 +1,16 @@
 <md-bottom-sheet class="md-list md-has-header">
   <h3>{{ activity.name }}</h3>
   <div>
-      {{ activity.location }}
+      {{ activity.venue }}
   </div>
   <div>
-      {{ activity.date | date:'EEEE d MMMM' }} {{ activity.time }}
+      {{ activity.start | date:'EEEE d MMMM HH:mm' }} {{ activity.end | date:'shortTime' }}
   </div>
-  <div ng-if="activity.leader">
-    {{ activity.leader }}
+  <div ng-if="activity.leader_name">
+    {{ activity.leader_name }}
   </div>
   <div>
-    {{ activity.placesLeft }} platser kvar av {{ activity.placesTotal }}
+    {{ activity.available_places }} platser kvar av {{ activity.bookable_places }}
   </div>
   <p></p>
 

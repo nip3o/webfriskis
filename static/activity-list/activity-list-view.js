@@ -4,8 +4,12 @@ angular.module('FriskisApp').controller('ActivityListViewController', function (
     $scope.dates = [new Date(2015, 1, 15), new Date(2015, 1, 16), new Date(2015, 1, 17), new Date(2015, 1, 18)];
 
     $http.get('/activities').then(function (response) {
-        $scope.activities = response.data.result;
-        console.log($scope.activities);
+        $scope.activities = response.data.result.map(function (activity) {
+            activity.start = new Date(activity.start_dt);
+            activity.end = new Date(activity.end_dt);
+
+            return activity;
+        });
     })
 
     // Activity.query(function (activities) {

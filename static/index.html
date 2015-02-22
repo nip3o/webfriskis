@@ -20,7 +20,12 @@
             <md-tab-label>
               {{ date | date:'EEEE d MMM' }}
             </md-tab-label>
-            <activity-list items="activities"></activity-list>
+
+            <div ng-if="!activities" layout="row" layout-sm="column" layout-align="space-around">
+              <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+            </div>
+
+            <activity-list ng-show="activities" items="activities"></activity-list>
           </md-tab>
         </md-tabs>
 

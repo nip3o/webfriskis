@@ -1,34 +1,45 @@
 # -*- coding: utf-8 -*-
 
-import datetime
+from flask import Flask, send_file, send_from_directory, jsonify, request
+from marshmallow import Schema, fields
 
-from flask import Flask, send_file, send_from_directory, jsonify
+from friskis import FriskisClient
 
 app = Flask(__name__)
 
 
+class ShiftSchema(Schema):
+    name = fields.String()
+    venue = fields.String()
+    leader_name = fields.String()
+    start_dt = fields.DateTime()
+    end_dt = fields.DateTime()
+    available_places = fields.Integer()
+    bookable_places = fields.Integer()
+    total_places = fields.Integer()
+
+
 @app.route('/activities')
 def activities_list():
+    client = FriskisClient()
+    client.login(username='nip3o', password='J9yshwvCc7ccCGNjSw5c')
+    shifts = client.get_available_shifts()
+
+    schema = ShiftSchema(many=True)
     response = jsonify({
-        'result': [{
-            'name': u'Gym öppet',
-            'date': datetime.datetime.now().isoformat(),
-            'placesLeft': 2,
-            'placesTotal': 30,
-            'time': '14:30 - 20:00',
-            'location': 'Kanonhuset',
-            'leader': '',
-        }, {
-            'name': u'Power Hour',
-            'date': datetime.datetime.now().isoformat(),
-            'placesLeft': 2,
-            'placesTotal': 30,
-            'time': '16:00 - 17:00',
-            'location': 'Kanonhuset',
-            'leader': 'Kaka Mupp',
-        }]})
+        'result': schema.dump(shifts).data,
+    })
     response.status_code = 200
     return response
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    client = FriskisClient()
+    client.login(username=request.form['username'],
+                 password=request.form['password'])
+
+    return client.session
 
 
 @app.route('/')

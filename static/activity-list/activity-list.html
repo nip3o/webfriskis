@@ -6,10 +6,9 @@
       </div>
       <div class="md-tile-content">
         <h3>{{ activity.name }}</h3>
-        <h4>{{ activity.time }}</h4>
+        <h4>{{ activity.start | date:'shortTime' }}</h4>
         <p>
-          {{ activity.location }}
-          <span ng-if="activity.leader">, {{ activity.leader }}</span>
+          {{ activity.venue }}<span ng-if="activity.leader_name">, {{ activity.leader_name }}</span>
         </p>
       </div>
     </md-item-content>
