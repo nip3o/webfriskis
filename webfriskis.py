@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
 import os
 
+from werkzeug.contrib.cache import MemcachedCache
 from flask import Flask, send_file, send_from_directory, jsonify, request
+
 from marshmallow import Schema, fields
 
 from friskis import FriskisClient
 
 app = Flask(__name__)
+cache = MemcachedCache(['127.0.0.1:11211'])
+
+SHIFTS_CACHE_KEY = 'activities'
+CACHE_TIMEOUT = 5 * 60
 
 
 class ShiftSchema(Schema):
@@ -22,13 +28,17 @@ class ShiftSchema(Schema):
 
 @app.route('/activities')
 def activities_list():
-    client = FriskisClient()
-    client.login(username=os.environ['FRISKIS_USERNAME'],
-                 password=os.environ['FRISKIS_PASSWORD'])
-
-    shifts = client.get_available_shifts()
-
     schema = ShiftSchema(many=True)
+    shifts = cache.get(SHIFTS_CACHE_KEY)
+
+    if not shifts:
+        client = FriskisClient()
+        client.login(username=os.environ['FRISKIS_USERNAME'],
+                     password=os.environ['FRISKIS_PASSWORD'])
+
+        shifts = list(client.get_available_shifts())
+        cache.set(SHIFTS_CACHE_KEY, shifts, timeout=CACHE_TIMEOUT)
+
     response = jsonify({
         'result': schema.dump(shifts).data,
     })
