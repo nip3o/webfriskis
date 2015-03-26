@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 
 from flask import Flask, send_file, send_from_directory, jsonify, request
 from marshmallow import Schema, fields
@@ -22,7 +23,9 @@ class ShiftSchema(Schema):
 @app.route('/activities')
 def activities_list():
     client = FriskisClient()
-    client.login(username='nip3o', password='J9yshwvCc7ccCGNjSw5c')
+    client.login(username=os.environ['FRISKIS_USERNAME'],
+                 password=os.environ['FRISKIS_PASSWORD'])
+
     shifts = client.get_available_shifts()
 
     schema = ShiftSchema(many=True)
