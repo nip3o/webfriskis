@@ -1,17 +1,19 @@
-<md-list>
-  <md-item ng-repeat="activity in items | orderBy:'start'" ng-click="select($event, activity)">
-    <md-item-content>
-      <div class="md-tile-left">
+<md-content>
+  <md-list>
+    <md-item ng-repeat="activity in items | orderBy:'start'" ng-click="select($event, activity)">
+      <md-item-content>
+        <div class="md-tile-left">
 
-      </div>
-      <div class="md-tile-content">
-        <h3>{{ activity.name }}</h3>
-        <h4>{{ activity.start | date:'shortTime' }}</h4>
-        <p>
-          {{ activity.venue }}<span ng-if="activity.leader_name">, {{ activity.leader_name }}</span>
-        </p>
-      </div>
-    </md-item-content>
-    <md-divider ng-if="!$last"></md-divider>
-  </md-item>
-</md-list>
+        </div>
+        <div class="md-tile-content">
+          <h3>{{ activity.name }}</h3>
+          <h4>{{ activity.start | date:'shortTime' }}</h4>
+          <p>
+            {{ activity.venue }}<span ng-if="activity.leader_name">, {{ activity.leader_name }}</span>
+          </p>
+        </div>
+      </md-item-content>
+      <md-divider ng-if="!$last"></md-divider>
+    </md-item>
+  </md-list>
+</md-content>

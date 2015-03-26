@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   </head>
-  <body layout="column" ng-controller="ActivityListViewController">
+  <body layout="column" ng-controller="ActivityListViewController as ctrl">
     <md-toolbar>
       <div class="md-toolbar-tools">
         Friskis Linköping
@@ -25,24 +25,26 @@
               {{ date | date:'EEEE d MMM' }}
             </md-tab-label>
 
-            <div ng-if="!activities" layout="row" layout-sm="column" layout-align="space-around">
+            <div ng-if="!activitiesByDate" layout="row" layout-sm="column" layout-align="space-around">
               <md-progress-circular md-mode="indeterminate"></md-progress-circular>
             </div>
 
-            <activity-list ng-show="activities" items="activities"></activity-list>
+            <activity-list ng-if="activitiesByDate" items="getActivities(date)"></activity-list>
           </md-tab>
         </md-tabs>
 
       </div>
     </div>
 
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-animate.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-aria.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-resource.min.js"></script>
 
     <script src="//code.angularjs.org/1.3.6/i18n/angular-locale_sv-se.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angular_material/0.7.1/angular-material.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
 
     <script src="/static/app.js"></script>
     <script src="/static/resources/activity.js"></script>
