@@ -18,14 +18,14 @@ class URLs:
 
 class Shift(object):
     def __init__(self, name, venue, leader_name, start_dt, end_dt, booking_url=None,
-                 available_places=None, bookable_places=None, total_places=None):
+                 booked_places=None, bookable_places=None, total_places=None):
         self.name = name
         self.venue = venue
         self.leader_name = leader_name
         self.start_dt = start_dt
         self.end_dt = end_dt
         self.booking_url = booking_url
-        self.available_places = available_places
+        self.booked_places = booked_places
         self.bookable_places = bookable_places
         self.total_places = total_places
 
@@ -73,7 +73,7 @@ def parse_shift(row, date):
     href = cells.find('a').attr('href')
     url = URLs.base + href if href else None
 
-    available, bookable, total = parse_places(cells.eq(4).text())
+    booked, bookable, total = parse_places(cells.eq(4).text())
 
     return Shift(name=cells.eq(2).text(),
                  venue=cells.eq(0).text(),
@@ -81,7 +81,7 @@ def parse_shift(row, date):
                  start_dt=datetime.datetime.combine(date, start_time),
                  end_dt=datetime.datetime.combine(date, end_time),
                  booking_url=url,
-                 available_places=available,
+                 booked_places=booked,
                  bookable_places=bookable,
                  total_places=total)
 
@@ -90,7 +90,7 @@ def parse_date(row):
     date = datetime.datetime.strptime(' '.join(row.text().split()[2:]), '%d %B')
     today = datetime.date.today()
 
-    date.replace(year=today.year + (1 if date.month < today.month else 0))
+    date = date.replace(year=today.year + (1 if date.month < today.month else 0))
     return date
 
 
