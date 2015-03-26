@@ -21,7 +21,7 @@ class ShiftSchema(Schema):
     leader_name = fields.String()
     start_dt = fields.DateTime()
     end_dt = fields.DateTime()
-    available_places = fields.Integer()
+    booked_places = fields.Integer()
     bookable_places = fields.Integer()
     total_places = fields.Integer()
 
