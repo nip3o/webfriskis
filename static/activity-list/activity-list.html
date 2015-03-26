@@ -1,5 +1,5 @@
 <md-list>
-  <md-item ng-repeat="activity in items" ng-click="select($event, activity)">
+  <md-item ng-repeat="activity in items | orderBy:'start'" ng-click="select($event, activity)">
     <md-item-content>
       <div class="md-tile-left">
 
