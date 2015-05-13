@@ -20,7 +20,6 @@ angular.module('FriskisApp').controller('ActivityListViewController', function (
     }
 
     $scope.dates = createDateSequence(5);
-    console.log($scope.dates);
 
     $http.get('/activities').then(function (response) {
         response.data.result.forEach(function (activity) {
@@ -42,10 +41,14 @@ angular.module('FriskisApp').controller('ActivityListViewController', function (
     }
 
 
-}).controller('ActivitySheetController', function($scope, $mdBottomSheet, activity) {
+}).controller('ActivitySheetController', function($scope, $http, $mdBottomSheet, activity) {
     $scope.activity = activity;
 
-    $scope.listItemClick = function() {
-        $mdBottomSheet.hide(clickedItem);
+    $scope.book = function (activity) {
+        $scope.loading = true;
+        $http.post('/activities/' + activity.uid + '/book').then(function (response) {
+            $scope.loading = false;
+            $mdBottomSheet.hide(response.data);
+        });
     };
 });

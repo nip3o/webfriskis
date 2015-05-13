@@ -16,6 +16,7 @@ CACHE_TIMEOUT = 5 * 60
 
 
 class ShiftSchema(Schema):
+    uid = fields.String()
     name = fields.String()
     venue = fields.String()
     leader_name = fields.String()
@@ -42,6 +43,26 @@ def activities_list():
     response = jsonify({
         'result': schema.dump(shifts).data,
     })
+    response.status_code = 200
+    return response
+
+
+@app.route('/activities/<uid>/book', methods=['POST'])
+def book(uid):
+    schema = ShiftSchema()
+
+    client = FriskisClient()
+    client.login(username=os.environ['FRISKIS_USERNAME'],
+                 password=os.environ['FRISKIS_PASSWORD'])
+
+    for shift in client.get_available_shifts():
+        if shift.uid == uid:
+            shift.book(client.session)
+
+    shift.booked_places += 1
+    shift.bookable_places -= 1
+
+    response = jsonify(schema.dump(shift).data)
     response.status_code = 200
     return response
 

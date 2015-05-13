@@ -16,12 +16,13 @@
 
   <md-divider></md-divider>
 
-  <md-list>
+  <md-list ng-if="activity.booked_places < activity.bookable_places">
     <md-item>
       <md-button>
         <i class="fa fa-2x fa-plus-circle"></i>
-        <span class="md-inline-list-icon-label">Boka passet</span>
+        <span class="md-inline-list-icon-label" ng-click="book(activity)" ng-disabled="loading">Boka passet</span>
       </md-button>
+    <md-progress-circular md-mode="indeterminate" ng-if="loading"></md-progress-circular>
     </md-item>
   </md-list>
 
