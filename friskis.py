@@ -4,6 +4,7 @@ import datetime
 import locale
 
 import requests
+import urlparse
 from pyquery import PyQuery
 
 # Title of the heading before table containing shedule, used to find the correct table
@@ -17,7 +18,7 @@ class URLs:
 
 
 class Shift(object):
-    def __init__(self, name, venue, leader_name, start_dt, end_dt, booking_url=None,
+    def __init__(self, name, venue, leader_name, start_dt, end_dt, booking_url=None, uid=None,
                  booked_places=None, bookable_places=None, total_places=None):
         self.name = name
         self.venue = venue
@@ -25,6 +26,7 @@ class Shift(object):
         self.start_dt = start_dt
         self.end_dt = end_dt
         self.booking_url = booking_url
+        self.uid = uid
         self.booked_places = booked_places
         self.bookable_places = bookable_places
         self.total_places = total_places
@@ -73,6 +75,8 @@ def parse_shift(row, date):
     href = cells.find('a').attr('href')
     url = URLs.base + href if href else None
 
+    uid = urlparse.parse_qs(urlparse.urlparse(url).query)['id'][0] if url else None
+
     booked, bookable, total = parse_places(cells.eq(4).text())
 
     return Shift(name=cells.eq(2).text(),
@@ -83,7 +87,8 @@ def parse_shift(row, date):
                  booking_url=url,
                  booked_places=booked,
                  bookable_places=bookable,
-                 total_places=total)
+                 total_places=total,
+                 uid=uid)
 
 
 def parse_date(row):
