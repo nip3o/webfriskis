@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+import pytz
 import datetime
 import locale
 
@@ -68,6 +69,11 @@ def parse_start_end_time(times):
     return parse_time(start), parse_time(end)
 
 
+def create_datetime(date, time):
+    dt = datetime.datetime.combine(date, time)
+    return pytz.timezone('Europe/Stockholm').localize(dt)
+
+
 def parse_shift(row, date):
     cells = row.children()
     start_time, end_time = parse_start_end_time(cells.eq(1).text())
@@ -82,8 +88,8 @@ def parse_shift(row, date):
     return Shift(name=cells.eq(2).text(),
                  venue=cells.eq(0).text(),
                  leader_name=cells.eq(3).text(),
-                 start_dt=datetime.datetime.combine(date, start_time),
-                 end_dt=datetime.datetime.combine(date, end_time),
+                 start_dt=create_datetime(date, start_time),
+                 end_dt=create_datetime(date, end_time),
                  booking_url=url,
                  booked_places=booked,
                  bookable_places=bookable,
